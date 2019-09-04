@@ -1,6 +1,5 @@
 window.showPastEvents = (contract, selector) => {
     contract.getPastEvents("NewHashValue", {fromBlock: 0, toBlock: 'latest'}, function (error, events) {
-        console.log(events);
         const data = events.map(function (event) {
             return {
                 blockNumber: event.blockNumber,

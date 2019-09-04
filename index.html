@@ -11,7 +11,6 @@
     <script src="https://cdn.jsdelivr.net/gh/owidder/super-simple-utils@v0.12/build/static/js/hash.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.35/dist/web3.min.js"></script>
     <script src="./showPastEvents.js"></script>
-    <script src="./hash.js"></script>
 </head>
 
 <style>
@@ -55,8 +54,19 @@
                 window.hashAndLog = () => {
                     const textarea = document.querySelector(".input textarea");
                     const textToHashAndLog = textarea.value;
-                    hashSHA256FromUtf8(textToHashAndLog).then(hashedText => {
-                        console.log(hashedText)
+                    hashSHA256(textToHashAndLog).then(hashedText => {
+                        web3.eth.getAccounts((err, accountList) => {
+                            contract.methods.logHashValue(hashedText).send({from: accountList[0]})
+                                .on("confirmation", (confirmationNumber, receipt) => {
+                                    console.log(`conformation number: ${confirmationNumber}`);
+                                    console.log(receipt);
+                                    showPastEvents(contract, "div.table");
+                                })
+                                .on("error", error => {
+                                    console.error(error)
+                                })
+                        })
+                        console.log(contract);
                     })
                 }
             })
