@@ -63,10 +63,11 @@
                                     showPastEvents(contract, "div.table");
                                 })
                                 .on("error", error => {
-                                    console.error(error)
+                                    console.error(error);
+                                    window.alert(error);
+                                    showPastEvents(contract, "div.table");
                                 })
                         })
-                        console.log(contract);
                     })
                 }
             })
